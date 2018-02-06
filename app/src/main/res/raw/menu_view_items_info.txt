@@ -1,0 +1,6 @@
+1 gradiente
+22 - 24 cumulus_small2
+25 - 28 cumulus_small3
+
+4 menu_title
+6 moving_bird
