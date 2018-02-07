@@ -4,16 +4,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 
 import com.fedexu.androidgameengine.Animation;
+import com.fedexu.androidgameengine.EngineUtils;
 import com.fedexu.androidgameengine.GameView;
+import com.fedexu.androidgameengine.object.BasicObject;
 import com.fedexu.androidgameengine.object.GameObject;
 import com.fedexu.slapbirds.R;
+import com.fedexu.slapbirds.objects.Background;
+import com.fedexu.slapbirds.objects.Bird;
 import com.fedexu.slapbirds.objects.Cloud;
+import com.fedexu.slapbirds.objects.MenuTitle;
 
 import java.util.ArrayList;
+
+import static android.util.Log.*;
 
 /**
  * Created by Federico on 05/02/18.
@@ -44,87 +52,103 @@ public class MenuView extends GameView {
 
     @Override
     public void onTouch(MotionEvent motionEvent) {
-
+        //Log.d("TOUCH", "inizioCicloTouch");
     }
 
     @Override
     public void update() {
-
+       //Log.d("UPDATE", "inizioCicloUpdate");
     }
 
     private void startUpView(){
 
-        //To be created from json
+        int cloudRDelay = 160;
+        int cloudLDelay = 160;
 
-        ArrayList<GameObject> gameObjects = new ArrayList<>();
+        ArrayList<GameObject> objects = new ArrayList<>();
 
-        Animation animation;
-        Bitmap draw;
-        Cloud cloud;
+        String jsonString = EngineUtils.readJsonfile(getResources().openRawResource(R.raw.menu_view_items));
+        BasicObject[] levelElement = EngineUtils.parseJsonString(BasicObject[].class, jsonString);
 
-        cloud = new Cloud();
-        cloud.startCenter = new Point(0 - (int) (this.displeySize.x * 0.2) , (int) (this.displeySize.y * 0.1)  );
+        for(BasicObject b : levelElement) {
+            EngineUtils.pointPercToPointPx(b, this.displeySize);
 
-        draw = BitmapFactory.decodeResource(this.getResources(), R.drawable.colud1);
+            if (b.getId() == 1) {
+                Background background = new Background(this.displeySize);
 
-        animation = new Animation(draw , 1, 0, 100, 100);
-
-        cloud.addAnimation("IDLE", animation);
-        cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
-
-        gameObjects.add(cloud);
+                Bitmap backroundImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.gradiente);
+                Animation backgroundAnimation = new Animation(backroundImage, 1, 0, displeySize.x, displeySize.y);
+                background.addAnimation("BACKGROUND", backgroundAnimation);
 
 
-        cloud = new Cloud();
-        cloud.startCenter = new Point(this.displeySize.x + (int) (this.displeySize.x * 0.2),
-                (int) (this.displeySize.y * 0.3)  );
+                objects.add(background);
 
-        draw = BitmapFactory.decodeResource(this.getResources(), R.drawable.colud3);
+            }
 
-        animation = new Animation(draw , 1, 0, 100, 100);
+            if (b.getId() == 40){
 
-        cloud.addAnimation("IDLE", animation);
-        cloud.setDirectionAngle(180);
+                MenuTitle menuTitle = new MenuTitle(b);
 
-        cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
+                //Bitmap menuImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.menu_title);
+                //Animation menuAnimation = new Animation(menuImage, 1, 0, TOBE, TOBE);
+                //menuTitle.addAnimation("MENU_TITLE", menuAnimation);
 
-        gameObjects.add(cloud);
+                objects.add(menuTitle);
 
+            }
 
-        cloud = new Cloud();
-        cloud.startCenter = new Point(0 - (int) (this.displeySize.x * 0.2), (int) (this.displeySize.y * 0.5)  );
+            if (b.getId() == 60){
+                Bird bird = new Bird(b);
 
-        draw = BitmapFactory.decodeResource(this.getResources(), R.drawable.colud7);
+                Bitmap birdImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.blue_bird);
+                Animation birdAnimation = new Animation(birdImage, 4, 100, 160, 160 );
+                bird.addAnimation("FLAP", birdAnimation);
 
-        animation = new Animation(draw , 1, 0, 100, 100);
+                objects.add(bird);
 
-        cloud.addAnimation("IDLE", animation);
+            }
 
-        cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
+            if (b.getId() >= 30 && b.getId() <= 39 ){
 
-        gameObjects.add(cloud);
+                Cloud cloud = new Cloud(b);
 
+                Bitmap cloudImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.cumulus_small2);
+                Animation cloudAnimation = new Animation(cloudImage, 1, 0, 760, 510 );
+                cloud.addAnimation("CLOUD", cloudAnimation);
 
-        cloud = new Cloud();
-        cloud.startCenter = new Point(this.displeySize.x  + (int) (this.displeySize.x * 0.2),
-                (int) (this.displeySize.y * 0.8)  );
+                cloud.startCenter = new Point(0 - cloudRDelay, cloud.startCenter.y);
+                cloudRDelay += cloudRDelay*2;
 
-        draw = BitmapFactory.decodeResource(this.getResources(), R.drawable.cumulus_small2);
+                cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
+                cloud.setSpeed(50);
 
-        animation = new Animation(draw , 1, 0, 100, 100);
+                objects.add(cloud);
+            }
 
-        cloud.addAnimation("IDLE", animation);
-        cloud.setDirectionAngle(180);
-        cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
+            if (b.getId() >= 20 && b.getId() <= 29){
 
-        gameObjects.add(cloud);
+                Cloud cloud = new Cloud(b);
 
-        gameData.getGameObjects().addAll(gameObjects);
+                Bitmap cloudImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.cumulus_small3);
+                Animation cloudAnimation = new Animation(cloudImage, 1, 0, 640, 410 );
+                cloud.addAnimation("CLOUD", cloudAnimation);
+                cloud.setDirectionAngle(180);
+                cloud.startCenter = new Point(displeySize.x + cloudLDelay, cloud.startCenter.y);
+                cloudLDelay += cloudLDelay *2;
 
+                cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
 
+                objects.add(cloud);
+            }
 
-        //end to be crated from json
+        }
 
+        gameData.setGameObjects(objects);
+
+        MenuViewData menuData = new MenuViewData();
+        menuData.displaySize = this.displeySize;
+
+        gameData.setViewData(menuData);
 
 
     }

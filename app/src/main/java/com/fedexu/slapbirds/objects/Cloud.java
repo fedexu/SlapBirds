@@ -17,21 +17,8 @@ public class Cloud extends GameObject {
     public Point startCenter;
 
     //toBe from json
-    public Cloud (){
-        super();
-
-        //toBe from json
-
-        this.getPolygon().addPoint(0, 0);
-
-        this.getPolygon().addPoint(100 , 0) ;
-
-        this.getPolygon().addPoint(100 , 30);
-
-        this.getPolygon().addPoint(0, 30);
-
-
-        //end toBe from json
+    public Cloud (BasicObject b){
+        super(b);
 
         this.setSpeed(30);
 
@@ -40,6 +27,8 @@ public class Cloud extends GameObject {
         this.setUntouchable(true);
 
         this.setVisible(true);
+
+        this.startCenter = this.getCenter();
 
     }
 
