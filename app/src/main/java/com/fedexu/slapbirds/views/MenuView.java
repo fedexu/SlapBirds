@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import com.fedexu.androidgameengine.Animation;
 import com.fedexu.androidgameengine.EngineUtils;
 import com.fedexu.androidgameengine.GameView;
+import com.fedexu.androidgameengine.geom.FontCache;
 import com.fedexu.androidgameengine.object.BasicObject;
 import com.fedexu.androidgameengine.object.GameObject;
 import com.fedexu.slapbirds.R;
@@ -43,6 +45,10 @@ public class MenuView extends GameView {
         //custom Menu view data
         MenuViewData data = new MenuViewData();
         data.displaySize = this.displeySize;
+
+        //load the pixel font
+        //notWorking
+        //FontCache.getCachedTypeFace("munro.ttf" , context);
 
         gameData.setViewData(data);
 
