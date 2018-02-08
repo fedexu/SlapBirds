@@ -32,7 +32,7 @@ public class Bird extends GameObject {
 
         this.startCenter = this.getCenter();
 
-        this.setSpeed(100);
+        this.setSpeed(150);
 
         this.setDirectionAngle(290);
     }
@@ -62,10 +62,14 @@ public class Bird extends GameObject {
         if (this.getCenter().x >  this.startCenter.x + (data.displaySize.x * 0.6)  ) {
             this.setDirectionAngle(180 - this.getDirectionAngle());
             this.comeBack();
+            this.getCurrentAnimation().flipBitmap(true, false);
+            this.setSpeed(100);
         }else
             if (this.getCenter().x <  this.startCenter.x ){
                 this.setDirectionAngle( this.getDirectionAngle() - 180);
                 this.comeBack();
+                this.getCurrentAnimation().flipBitmap(true, false);
+                this.setSpeed(150);
             }
 
         if (this.getCenter().y >  this.startCenter.y + (data.displaySize.y * 0.1)  ){

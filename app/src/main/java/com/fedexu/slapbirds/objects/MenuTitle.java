@@ -27,7 +27,7 @@ public class MenuTitle extends GameObject {
 
         this.startCenter = this.getCenter();
 
-        this.setSpeed(60);
+        this.setSpeed(30);
 
         this.setDirectionAngle(270);
     }
@@ -55,7 +55,7 @@ public class MenuTitle extends GameObject {
             this.setDirectionAngle(90);
             this.comeBack();
         }else
-        if (this.getCenter().y <  this.startCenter.y - (data.displaySize.y * 0.05) ){
+        if (this.getCenter().y <  this.startCenter.y - (data.displaySize.y * 0.03) ){
             this.setDirectionAngle(270);
             this.comeBack();
         }
