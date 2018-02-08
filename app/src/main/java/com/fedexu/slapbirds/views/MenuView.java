@@ -101,7 +101,7 @@ public class MenuView extends GameView {
                 Bird bird = new Bird(b);
 
                 Bitmap birdImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.blue_bird);
-                Animation birdAnimation = new Animation(birdImage, 4, 100, 160, 160 );
+                Animation birdAnimation = new Animation(birdImage, 4, 50, 160, 160 );
                 bird.addAnimation("FLAP", birdAnimation);
 
                 objects.add(bird);
