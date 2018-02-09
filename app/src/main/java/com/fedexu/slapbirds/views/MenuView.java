@@ -98,7 +98,7 @@ public class MenuView extends GameView {
                 //Bitmap menuImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.menu_title);
                 //Animation menuAnimation = new Animation(menuImage, 1, 0, TOBE, TOBE);
                 //menuTitle.addAnimation("MENU_TITLE", menuAnimation);
-
+                menuTitle.floatingY = (int) (displeySize.y * 0.03);
                 objects.add(menuTitle);
 
             }
@@ -126,7 +126,7 @@ public class MenuView extends GameView {
                 cloudRDelay += cloudRDelay*2;
 
                 cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
-                cloud.setSpeed(50);
+                //cloud.setSpeed(50);
 
                 objects.add(cloud);
             }

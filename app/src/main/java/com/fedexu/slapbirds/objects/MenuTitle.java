@@ -16,10 +16,14 @@ public class MenuTitle extends GameObject {
 
     public Point startCenter;
 
+    public static int floatingY;
+
+    private int trackY = 0;
+
     public MenuTitle(BasicObject b){
         super(b);
 
-        this.setImmovable(false);
+        this.setImmovable(true);
 
         this.setUntouchable(true);
 
@@ -27,9 +31,10 @@ public class MenuTitle extends GameObject {
 
         this.startCenter = this.getCenter();
 
-        this.setSpeed(30);
+        //this.setSpeed(30);
 
         this.setDirectionAngle(270);
+
     }
 
     @Override
@@ -51,13 +56,21 @@ public class MenuTitle extends GameObject {
 
         MenuViewData data = (MenuViewData) gameData.getViewData();
 
-        if (this.getCenter().y >  this.startCenter.y ){
+        if (trackY > floatingY) {
             this.setDirectionAngle(90);
-            this.comeBack();
-        }else
-        if (this.getCenter().y <  this.startCenter.y - (data.displaySize.y * 0.03) ){
-            this.setDirectionAngle(270);
-            this.comeBack();
         }
+        if (trackY < 0) {
+            this.setDirectionAngle(270);
+        }
+
+        if (this.getDirectionAngle() == 90) {
+            this.translateY(this.getCenter().y + 1);
+            trackY--;
+        }
+        else{
+            this.translateY(this.getCenter().y - 1);
+            trackY++;
+        }
+
     }
 }
