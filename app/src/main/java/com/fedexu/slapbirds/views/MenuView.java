@@ -3,6 +3,7 @@ package com.fedexu.slapbirds.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -15,11 +16,13 @@ import com.fedexu.androidgameengine.GameView;
 import com.fedexu.androidgameengine.geom.FontCache;
 import com.fedexu.androidgameengine.object.BasicObject;
 import com.fedexu.androidgameengine.object.GameObject;
+import com.fedexu.androidgameengine.object.TextObject;
 import com.fedexu.slapbirds.R;
 import com.fedexu.slapbirds.objects.Background;
 import com.fedexu.slapbirds.objects.Bird;
 import com.fedexu.slapbirds.objects.Cloud;
 import com.fedexu.slapbirds.objects.MenuTitle;
+import com.fedexu.slapbirds.objects.StartButton;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,9 @@ import static android.util.Log.*;
 
 public class MenuView extends GameView {
 
+
+    public Typeface textFont;
+
     /**
      * Create a new view based on the context of the
      * activity and the display size.
@@ -40,15 +46,14 @@ public class MenuView extends GameView {
      */
     public MenuView(Context context, Display display) {
         super(context, display);
-        gameData.setDebugEnable(true);
+        gameData.setDebugEnable(false);
 
         //custom Menu view data
         MenuViewData data = new MenuViewData();
         data.displaySize = this.displeySize;
 
         //load the pixel font
-        //notWorking
-        //FontCache.getCachedTypeFace("munro.ttf" , context);
+        textFont = FontCache.getCachedTypeFace("fonts/munro.ttf" , context);
 
         gameData.setViewData(data);
 
@@ -73,7 +78,7 @@ public class MenuView extends GameView {
 
         ArrayList<GameObject> objects = new ArrayList<>();
 
-        String jsonString = EngineUtils.readJsonfile(getResources().openRawResource(R.raw.menu_view_items));
+        String jsonString = EngineUtils.readJsonfile(getResources().openRawResource(R.raw.menu_view_items2));
         BasicObject[] levelElement = EngineUtils.parseJsonString(BasicObject[].class, jsonString);
 
         for(BasicObject b : levelElement) {
@@ -99,6 +104,7 @@ public class MenuView extends GameView {
                 //Animation menuAnimation = new Animation(menuImage, 1, 0, TOBE, TOBE);
                 //menuTitle.addAnimation("MENU_TITLE", menuAnimation);
                 menuTitle.floatingY = (int) (displeySize.y * 0.03);
+
                 objects.add(menuTitle);
 
             }
@@ -145,6 +151,20 @@ public class MenuView extends GameView {
                 cloud.translate(cloud.startCenter.x, cloud.startCenter.y);
 
                 objects.add(cloud);
+            }
+
+            if (b.getId() == 70 ){
+
+                StartButton startButton = new StartButton(b);
+
+                TextObject textObject = new TextObject(textFont, (int) (displeySize.y * 0.12) ,(int) (displeySize.y * 0.05),0);
+                textObject.addLine("START");
+                textObject.getPaint().setColor(Color.WHITE);
+
+                startButton.setText(textObject);
+
+                objects.add(startButton);
+
             }
 
         }
